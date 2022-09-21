@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="main/layout/basic">
+<th:block layout:fragment="title">
+	<title>This page is a survey result page</title>
+</th:block>
+
+
+<th:block layout:fragment="content">
+	<div class="card-content">
+		<!-- form-->
+		<form class="form-horizontal">
+			<!-- Masthead-->
+			<header class="masthead">
+				<div class="container px-4 px-lg-5 h-100">
+					<div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+						<div class="col-lg-8 align-self-end">
+							<h2 class="text-white font-weight-bold"><a th:text="${session.user.getId()}"></a>님의 유형은 :</h2>
+							<hr class="divider" />
+						</div>
+						<div class="table-responsive clearfix">
+							<table style="margin: auto; text-align: left;" class="text-white-75 mb-5">
+
+								<tbody th:if="${session.user.getUserCharacter()}!=null">
+									<tr>
+										<td class="text-center"><a th:text="${#strings.replace(typeInfo.feature, '유형', '')}"></a></td>
+									</tr>
+									<tr>
+										<td class="text-center"><h4 th:text="|${session.user.getUserCharacter().getName()} (${session.user.getUserCharacter().getTitle()})|"></h4></td>
+									</tr>
+									<tr>
+										<td class="text-center"><br><img th:src="@{|/assets/img/mbti/${session.user.getUserCharacter().getUserType()}.png|}" width=15%></td>
+									</tr>
+									<tr>
+										<td class="text-center"><br><h5 class="text-white-75 font-weight-bold">✨ 일상 속의 당신은 :</h5></td>
+									</tr>
+									<tr>
+										<td class="text-center"><a th:utext="${#strings.replace(typeInfo.feature2, '/', '&lt;br /&gt;')}"></a></td>
+									</tr>
+									<tr>
+										<td class="text-center"><br><h5 class="text-white-75 font-weight-bold">✨ 취준할 때 당신은 :</h5></td>
+									</tr>
+									<tr>
+										<td class="text-center"><a th:utext="${#strings.replace(typeInfo.inCompany, '/', '&lt;br /&gt;')}"></a></td>
+									</tr>
+								</tbody>
+								<tbody th:unless="${not #lists.isEmpty( surveyList )}">
+									<tr>
+										<td colspan="5">조회된 결과가 없습니다.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="col-lg-8 align-self-baseline">
+							<p class="text-white-75 mb-5">다시 테스트 하시겠습니까?</p>
+
+							<a class="btn btn-secondary btn-xl" style="margin:5px;" href="surveylist">다시 테스트하기</a>
+							<a class="btn btn-primary btn-xl" style="margin:5px;" th:href="@{/identify}">마이페이지</a>
+
+						</div>
+					</div>
+				</div>
+			</header>
+		</form>
+	</div>
+
+</th:block>
+
+</html>

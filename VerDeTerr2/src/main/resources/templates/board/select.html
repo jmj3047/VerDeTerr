@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="survey/layout/basic">
+
+<th:block layout:fragment="title">
+	<title>Select Board Type</title>
+	<link href="css/styles.css" rel="stylesheet" />
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	</th:block>
+
+<th:block layout:fragment="content">
+
+	<h1 style="text-align: center; padding: 60px 40px 20px 40px;">Select Board Type</h1>
+	<div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center"
+			 style="margin: 0 40px 0 40px;">
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+				<a th:href="@{/board/list(type='ENFJ')}"><img src="/assets/img/mbti/ENFJ.png" width=50%>
+				<br>주디
+				<br>(주토피아)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ENFP')}"><img src="/assets/img/mbti/ENFP.png" width=50%>
+				<br>올라프
+				<br>(겨울왕국)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ENTJ')}"><img src="/assets/img/mbti/ENTJ.png" width=50%>
+				<br>마이크 와조스키
+				<br>(몬스터 주식회사)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ENTP')}"><img src="/assets/img/mbti/ENTP.png" width=50%>
+				<br>짱구
+				<br>(짱구는 못말려)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ESFJ')}"><img src="/assets/img/mbti/ESFJ.png" width=50%>
+				<br>스폰지밥
+				<br>(네모바지 스폰지밥)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ESFP')}"><img src="/assets/img/mbti/ESFP.png" width=50%>
+				<br>심바
+				<br>(라이온킹)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ESTJ')}"><img src="/assets/img/mbti/ESTJ.png" width=50%>
+				<br>집게사장
+				<br>(네모바지 스폰지밥)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ESTP')}"><img src="/assets/img/mbti/ESTP.png" width=50%>
+				<br>버즈 라이트이어
+				<br>(토이스토리)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='INFJ')}"><img src="/assets/img/mbti/INFJ.png" width=50%>
+				<br>리사 심슨
+				<br>(심슨가족)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='INFP')}"><img src="/assets/img/mbti/INFP.png" width=50%>
+				<br>찰리브라운
+				<br>(피너츠)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='INTJ')}"><img src="/assets/img/mbti/INTJ.png" width=50%>
+				<br>벨
+				<br>(미녀와 야수)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='INTP')}"><img src="/assets/img/mbti/INTP.png" width=50%>
+				<br>뚱이
+				<br>(네모바지 스폰지밥)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ISFJ')}"><img src="/assets/img/mbti/ISFJ.png" width=50%>
+				<br>신데렐라
+				<br>(신데렐라)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ISFP')}"><img src="/assets/img/mbti/ISFP.png" width=50%>
+				<br>징징이
+				<br>(네모바지 스폰지밥)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ISTJ')}"><img src="/assets/img/mbti/ISTJ.png" width=50%>
+				<br>철수
+				<br>(짱구는 못말려)</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-md-3 text-center">
+			<div class="mt-3">
+				<div class="mb-3">
+					<a th:href="@{/board/list(type='ISTP')}"><img src="/assets/img/mbti/ISTP.png" width=50%>
+				<br>크리스토프
+				<br>(겨울왕국)</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</th:block>
+
+</html>

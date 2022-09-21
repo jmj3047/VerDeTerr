@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="board/layout/basic">
+<th:block layout:fragment="title">
+	<title>This page is a list page</title>
+	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script>
+		function isMyType() {
+			let isManager = "[[${isManager}]]";
+			let isMyType = "[[${isMyType}]]";
+			let type = "[[${type}]]";
+			if (isManager != "true") {
+				if (isMyType == "f") {
+					alert("해당 게시판의 글 작성 권한이 없습니다.");
+					location.href = "/board/list?type=" + type;
+				}
+				else {
+					location.href = "/board/write?type=" + type;
+				}
+			}
+			else {
+				location.href = "/board/write?type=" + type;
+			}
+		};
+	</script>
+</th:block>
+
+
+<!-- 여기서는 layout 순서 먹인걸로 가고, 이러한 레이아웃에 끼어놓은 부품을 쓴다고 정의한것 -->
+
+<th:block layout:fragment="content">
+<br>
+	<div style="text-align: center;"><img th:src="${charImg}" width=30%/></div>
+	<br>
+	<th:block layout:fragment="search">
+		<div th:replace="board/fragments/common :: search"></div>
+	</th:block>
+
+	<br>
+	<div class="table-responsive clearfix" style="margin: 20px 100px 40px 100px;">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>등록일</th>
+					<th>조회 수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${not #lists.isEmpty( boardlist )}" th:each="row : ${boardlist}">
+					<td scope="row" th:text="${#strings.equals( row.NoticeYn, true ) ? '&#8251공지&#8251' : row.idx}">
+					</td>
+					<td class="text-left"><a
+							th:href="|@{/board/view}${params.makeQueryString(params.currentPageNo)}&idx=${row.idx}|"
+							th:text="${row.title}"></a>
+
+
+
+
+					<td th:text="${row.writer}"></td>
+					<td th:text="${#temporals.format( row.insertTime, 'yyyy-MM-dd' )}"></td>
+					<td th:text="${row.viewCnt}"></td>
+				</tr>
+				<tr th:unless="${not #lists.isEmpty( boardlist )}">
+					<td colspan="5">조회된 결과가 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<div class="btn_wrap text-center" style="margin:20px;">
+			<a th:href="@{/board/select}" class="btn btn-secondary waves-effect waves-light">뒤로가기</a>
+			<button th:if="${session.user}!=null and ${isSurvey} != 'false'" onclick="isMyType();"
+				class="btn btn-primary waves-effect waves-light">글쓰기</button>
+		</div>
+
+		<th:block layout:fragment="paging">
+			<nav th:replace="board/fragments/common :: pagination"></nav>
+
+			<script th:inline="javascript">
+				/*<![CDATA[*/
+
+				function movePage(uri, queryString) {
+					location.href = uri + queryString;
+				}
+
+				function searchBoard(form) {
+					/*[- 드롭다운이 아닌 메인 검색 키워드로 검색했을 때 -]*/
+					if (isEmpty(form) == true) {
+						var searchKeyword = document.getElementById("mainSearchKeyword");
+						if (isEmpty(searchKeyword.value) == true) {
+							alert("키워드를 입력해 주세요.");
+							searchKeyword.focus();
+							return false;
+						}
+
+						form = document.getElementById("searchForm");
+						form.searchKeyword.value = searchKeyword.value;
+						form.submit();
+					}
+
+					if (isEmpty(form.searchKeyword.value) == true) {
+						alert("키워드를 입력해 주세요.");
+						form.searchKeyword.focus();
+						return false;
+					}
+				}
+
+
+				/*]]>*/
+			</script>
+		</th:block>
+
+</th:block>
+
+</div>
+</th:block>
+
+</html>

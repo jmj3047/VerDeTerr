@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="survey/layout/basic">
+
+<th:block layout:fragment="title">
+	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script>
+		$(document).ready(function() {
+			let msgFindPW = "[[${msgFindPW}]]";
+			if (msgFindPW != "") {
+				alert(msgFindPW);
+			} else {
+			}
+		})
+	</script>
+
+</th:block>
+
+<th:block layout:fragment="content">
+<div
+		class="container px-4 px-lg-5 h-100 align-items-center justify-content-center">
+		<h1 style="text-align: center; padding: 40px;">비밀번호 찾기</h1>
+		<form th:action="@{/findPw_proc}" method="post">
+			<div class="form-group" style="margin-top: 10px;">
+				<label th:for="userid">아이디</label> <input type="text" name="id"
+					class="form-control" placeholder="아이디를 입력해주세요"> <br> <label
+					th:for="userpwhint">비밀번호 힌트</label> <input type="text"
+					name="pwHint" class="form-control" placeholder="나의 보물 1호는?">
+			</div>
+			<button type="submit" class="btn btn-primary" style="margin-top: 20px;">비밀번호 찾기</button>
+			<button type="button" class="btn btn-secondary" style="margin-top: 20px;" onclick="history.back()">뒤로 가기</button>
+		</form>
+</div> 
+	
+	
+</th:block>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="survey/layout/basic">
+
+<head th:block layout:fragment="title">
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body th:block layout:fragment="content">
+	<div class="container px-4 px-lg-5 h-100 align-items-center justify-content-center">
+		<h1 style="text-align: center; padding: 40px;">회원가입</h1>
+		<form th:action="@{/signup_proc}" method="post" name="signup" style="margin-top: 10% 10% 0 10%;">
+			<div class="form-group" >
+				<label th:for="username">아이디</label> 
+				<input type="text" id="id" name="id" class="form-control" placeholder="아이디 입력해주세요">
+				<div id="check3"></div>
+				<button type="button" id="checkid" class="btn btn-outline-primary btn-sm" onclick="check_id()" style="margin-top: 7px; font-size: 12px; width: 13%;" value="false">아이디 중복확인</button>
+			</div>
+			<div class="form-group" >
+				<label th:for="password">비밀번호</label> 
+				<input type="password" id="pw1" onkeyup="check_pw1()" class="form-control" name="pw" placeholder="비밀번호 입력해주세요">
+				<div id="check1" style="color: gray; font-size: 12px; margin-bottom: 10px;">※ 비밀번호는 6글자 이상, 20글자 이하만 이용 가능합니다.</div>
+				<label th:for="password">비밀번호확인</label> 
+				<input type="password" id="pw2" onkeyup="check_pw2()" class="form-control" placeholder="비밀번호 확인해주세요"> 
+				<div id="check2" style="color: gray; font-size: 12px; margin-bottom: 10px;">※</div>
+			</div>
+			<div class="form-group" >
+				<label th:for="password">비밀번호힌트</label> <input type="text" id="pwHint" class="form-control" name="pwHint" placeholder="나의 보물 1호는?">
+			</div>
+
+			<div class="form-group" >
+				<label th:for="email">Email</label> 
+				<input type="email" class="form-control" id="email" name="email" placeholder="example@example.com">
+				<div id="check4"></div>
+				<button type="button" id="checkemail" class="btn btn-outline-primary btn-sm" onclick="check_email()" style="margin-top: 7px; font-size: 12px; width: 13%;" value="false">Email 중복확인</button>
+			</div>
+
+			<div class="form-group" >
+				<label th:for="age">나이</label> 
+				<input type="text" class="form-control" id="age" name="age" placeholder="나이 입력해주세요">
+			</div>
+			<br>
+			
+			<div class="form-group" >
+    			<label class="choose" >성별을 선택해주세요</label>
+    			<br>
+     				 <div class="dropdown" >
+     				 <div class="sign-dropdown">
+          					<span class="form-control" style="width:160px;">Select Gender</span>
+         					<i class="fa fa-chevron-left"></i>
+        				<input type="hidden" name="gender" id="gender" >
+        				<ul class="dropdown-menu" >
+          					<li id="남자" value="남자">남자</li>
+          					<br>
+          					<li id="여자" value="여자">여자</li>
+        				</ul>
+        				</div>
+     	 			</div>
+     	 			</div>
+     	 			
+			<div class="btn_wrap text-center" style="margin-top: 20px;">
+				<button type="button" id="signupbtn" class="btn btn-primary" onClick="signup()">회원가입</button>
+				<button type="button" class="btn btn-secondary" onClick="location.href='main'">취소하기</button>
+			</div>
+		</form>
+		<br />
+	</div>
+	<script>
+      $(document).ready(function() {
+         let message = "[[${msgSignupError}]]";
+         if (message != "") {
+            alert(message);
+         } else {
+         }
+      })
+ 
+      function check_pw1() {
+          let pw1 = document.getElementById('pw1').value;
+         if(pw1.length < 6 || pw1.length>20){
+             document.getElementById('check1').innerHTML = '비밀번호는 6글자 이상, 20글자 이하만 이용 가능합니다';
+             document.getElementById('check1').style.color = 'red';
+         } else{
+        	 document.getElementById('check1').innerHTML = '사용가능한 비밀번호 입니다.';
+        	 document.getElementById('check1').style.color = 'blue';
+         }
+      }
+         
+         function check_pw2(){
+        	 let pw1 = document.getElementById('pw1').value;
+             let pw2 = document.getElementById('pw2').value;
+             if(pw1 != null){
+            	 if (pw2 == null || pw2 ==='') {
+            		 document.getElementById('check2').innerHTML = '';
+                	 document.getElementById('check2').style = 'diplay:none';
+            	 }else if (pw1 == pw2) {
+                             document.getElementById('check2').innerHTML = '비밀번호가 일치합니다.';
+                             document.getElementById('check2').style.color = 'blue';
+                         } else {
+                             document.getElementById('check2').innerHTML = '비밀번호가 일치하지 않습니다.';
+                             document.getElementById('check2').style.color = 'red';
+                         }
+                     }
+             }
+
+         function check_id(){
+        	 let id= document.getElementById('id').value;
+             if(id==null || id==""){
+             	document.getElementById('check3').innerHTML = ' 아이디를 입력해주세요.';
+         		document.getElementById('check3').style.color = 'red';
+                signup.id.focus();
+                return;
+             }
+             document.getElementById('check3').innerHTML = '';
+      		 document.getElementById('check3').style = 'diplay:none';
+             window.open("/checkId", "checkId", "width=500, height=200, left=700, top=300");
+             return;
+             }
+
+         function check_email(){
+          	 let email= document.getElementById('email').value;
+       	 	 let regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+        	 if(email.match(regEmail) !=null){
+        		         		 if(email==null || email==""){
+        		         			 
+                  	document.getElementById('check4').innerHTML = 'Email을 입력해주세요.';
+              		document.getElementById('check4').style.color = 'red';
+                     signup.email.focus();
+                     return;
+                  }
+        		         		document.getElementById('check4').innerHTML = '';
+        	              		document.getElementById('check4').style = 'diplay:none';
+                  				window.open("/checkEmail", "checkEmail", "width=500, height=200, left=700, top=300");
+                  				return;
+        	 }
+        	 document.getElementById('check4').innerHTML = '올바른 이메일 형식이 아닙니다.';
+      		 document.getElementById('check4').style.color = 'red';
+             }
+         
+         document.getElementById("signupbtn").addEventListener("click", signup);
+         function signup(){
+        	 
+       	  let checkid = document.getElementById('checkid').value;
+       	  let pw1 = document.getElementById('pw1').value;
+       	  let pw2 = document.getElementById('pw2').value;
+          let pwHint = document.getElementById('pwHint').value;
+     	  let checkemail = document.getElementById('checkemail').value;
+     	  let age = document.getElementById('age').value;
+      	  let gender = document.getElementById('gender').value;
+
+        	 if(checkid=="false"){
+        		 alert('아이디 중복검사를 해주세요.');
+            	 return ;
+        	 };
+        	 if(pw1==""){
+        		 alert('비밀번호를 입력해주세요.');
+            	 return ;
+        	 };
+        	 if(pw2==""){
+        		 alert('비밀번호 확인해주세요.');
+            	 return ;
+        	 };
+        	 if(pwHint==""){
+        		 alert('비밀번호 힌트를 입력해주세요.');
+            	 return ;
+        	 };
+        	 if(checkemail=="false"){
+        		 alert('이메일 중복검사를 해주세요.');
+            	 return ;
+        	 };
+        	 if(age==""){
+        		 alert('나이를 입력해주세요.');
+            	 return ;
+        	 };
+        	 if(gender==""){
+        		 alert("성별을 선택해주세요.");
+        		 return ; 
+        	 };
+        	 document.signup.submit();
+         }
+         
+         /*Dropdown Menu*/
+         $('.dropdown').click(function () {
+                 $(this).attr('tabindex', 1).focus();
+                 $(this).toggleClass('active');
+                 $(this).find('.dropdown-menu').slideToggle(300);
+             });
+             $('.dropdown').focusout(function () {
+                 $(this).removeClass('active');
+                 $(this).find('.dropdown-menu').slideUp(300);
+             });
+             $('.dropdown .dropdown-menu li').click(function () {
+                 $(this).parents('.dropdown').find('span').text($(this).text());
+                 $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
+             });
+     
+   </script>
+</body>
+</html>

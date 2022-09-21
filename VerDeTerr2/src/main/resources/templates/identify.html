@@ -1,0 +1,35 @@
+<!--본인확인 페이지-->
+<!-- identify.html-->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="survey/layout/basic">
+
+<th:block layout:fragment="title">
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script>
+	    $(document).ready(function() {
+	        let message = "[[${msgIden}]]";
+	        if (message != "") {
+	           alert(message);       	
+	        } else {
+	        }
+	    })
+	</script>
+</th:block>
+
+<th:block layout:fragment="content">
+	<div class="container px-4 px-lg-5 h-100 align-items-center justify-content-center">
+	<h1 style="text-align: center; padding: 40px;">본인 확인</h1>
+    <form th:action="@{/identify_proc(id=${session.id})}" method="post">
+        <div class="form-group" style="margin-top: 10px;">
+            <label th:for="password">비밀번호</label>
+            <input type="password" class="form-control" name="pw" placeholder="비밀번호를 입력해주세요">
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">본인 확인하기</button>
+    </form>
+    <br/>
+</div>
+</th:block>
+</html>

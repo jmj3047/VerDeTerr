@@ -1,0 +1,138 @@
+<!-- 여기서는 list.html 에 보낸 파람즈들을 그대로 쓸수 있다. 왜냐면 list.html에 그냥 얘네들을 복붙해서 쓰는거기 때문에 -->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<nav th:fragment="pagination" th:if="${params != null and params.paginationInfo.totalRecordCount > 0}"
+	th:object="${params.paginationInfo}" th:with="info=${params.paginationInfo}" aria-label="Page navigation"
+	class="nav justify-content-center">
+	<ul class="pagination">
+
+		<li th:if="*{hasPreviousPage == true}"
+			th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${params.makeQueryString(1)} ]])">
+			<a href="javascript:void(0)" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+		</li>
+		<li th:if="*{hasPreviousPage == true}"
+			th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${params.makeQueryString(info.firstPage - 1)} ]])">
+			<a href="javascript:void(0)" aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a>
+		</li>
+		<li th:each="pageNo : *{#numbers.sequence( firstPage, lastPage )}"
+			th:class="${pageNo == params.currentPageNo} ? 'active'">
+			<a href="javascript:void(0)" th:text="${pageNo}"
+				 th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${params.makeQueryString(pageNo)} ]])"></a>
+				 &nbsp
+		</li>
+		<li th:if="*{hasNextPage == true}"
+			th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${params.makeQueryString(info.lastPage + 1)} ]])">
+			<a href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a>
+		</li>
+		<li th:if="*{hasNextPage == true}"
+			th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${params.makeQueryString(info.totalPageCount)} ]])">
+			<a href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+		</li>
+
+	</ul>
+</nav>
+<!-- th:fragment ->부품을정의 -->
+<div th:fragment="search" id="adv-search" class="input-group" style="float:right; margin-right: 100px;">
+	<input type="text" id="mainSearchKeyword" class="form-control" th:value="${params.searchKeyword}"
+		placeholder="키워드를 입력해 주세요." />
+	<div class="input-group-btn">
+		<div class="btn-group" role="group">
+			<div class="dropdown dropdown-lg">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+					aria-expanded="false"><span class="caret"></span></button>
+				<div class="dropdown-menu dropdown-menu-right" role="menu">
+					<!--/* 검색 form */-->
+
+					<!-- form 태그 안의 get 방식으로 인해 버튼을 클릭했을때 , th:action 에 달려있는 url과  input 정보들이 url을 통해  get 방식으로 넘어간다. -->
+					<form id="searchForm" th:action="@{/board/list}" method="get" th:onsubmit="return searchBoard(this)"
+						class="form-horizontal" role="form">
+						<!-- /* 현재 페이지 번호, 페이지당 출력할 데이터 개수, 페이지 하단에 출력할 페이지 개수 Hidden 파라미터 */ -->
+
+						<!-- value:값, name:백엔드로 넘어갈때 이름. -->
+						<input type="hidden" name="type" th:value="${params.type}" />
+						<input type="hidden" name="currentPageNo" value="1" />
+						<input type="hidden" name="recordsPerPage" th:value="${params.recordsPerPage}" />
+						<input type="hidden" name="pageSize" th:value="${params.pageSize}" />
+						<div class="form-group">
+							<label for="filter">검색 유형</label>
+							<select name="searchType" class="form-control">
+								<option value="" th:selected="${#strings.isEmpty( params.searchType )}">전체</option>
+								<option value="title" th:selected="${#strings.equals( params.searchType, 'title' )}">제목
+								</option>
+								<option value="content"
+									th:selected="${#strings.equals( params.searchType, 'content' )}">내용</option>
+								<option value="writer" th:selected="${#strings.equals( params.searchType, 'writer' )}">
+									작성자</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="contain">키워드</label>
+							<input type="text" name="searchKeyword" class="form-control"
+								th:value="${params.searchKeyword}" />
+						</div>
+						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"
+								aria-hidden="true">검색</span></button>
+					</form>
+				</div>
+			</div>
+			<button type="button" class="btn btn-primary" onclick="searchBoard(null)"><span
+					class="glyphicon glyphicon-search" aria-hidden="true">검색</span></button>
+		</div>
+	</div>
+</div>
+<!-- th:fragment ->부품을정의 -->
+<div th:fragment="search2" id="adv-search" class="input-group" style="float:right; margin-right: 100px;">
+	<input type="text" id="mainSearchKeyword" class="form-control" th:value="${params.searchKeyword}"
+		placeholder="키워드를 입력해 주세요." />
+	<div class="input-group-btn">
+		<div class="btn-group" role="group">
+			<div class="dropdown dropdown-lg">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+					aria-expanded="false"><span class="caret"></span></button>
+				<div class="dropdown-menu dropdown-menu-right" role="menu">
+					<!--/* 검색 form */-->
+
+					<!-- form 태그 안의 get 방식으로 인해 버튼을 클릭했을때 , th:action 에 달려있는 url과  input 정보들이 url을 통해  get 방식으로 넘어간다. -->
+					<form id="searchForm2" th:action="@{/board/mylist}" method="get" th:onsubmit="return searchBoard(this)"
+						class="form-horizontal" role="form">
+						<!-- /* 현재 페이지 번호, 페이지당 출력할 데이터 개수, 페이지 하단에 출력할 페이지 개수 Hidden 파라미터 */ -->
+
+						<!-- value:값, name:백엔드로 넘어갈때 이름. -->
+						<input type="hidden" name="type" th:value="${params.type}" />
+						<input type="hidden" name="currentPageNo" value="1" />
+						<input type="hidden" name="recordsPerPage" th:value="${params.recordsPerPage}" />
+						<input type="hidden" name="pageSize" th:value="${params.pageSize}" />
+						<div class="form-group">
+							<label for="filter">검색 유형</label>
+							<select name="searchType" class="form-control">
+								<option value="" th:selected="${#strings.isEmpty( params.searchType )}">전체</option>
+								<option value="title" th:selected="${#strings.equals( params.searchType, 'title' )}">제목
+								</option>
+								<option value="content"
+									th:selected="${#strings.equals( params.searchType, 'content' )}">내용</option>
+								<option value="writer" th:selected="${#strings.equals( params.searchType, 'writer' )}">
+									작성자</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="contain">키워드</label>
+							<input type="text" name="searchKeyword" class="form-control"
+								th:value="${params.searchKeyword}" />
+						</div>
+						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"
+								aria-hidden="true">검색</span></button>
+					</form>
+				</div>
+			</div>
+			<button type="button" class="btn btn-primary" onclick="searchBoard(null)"><span
+					class="glyphicon glyphicon-search" aria-hidden="true">검색</span></button>
+		</div>
+	</div>
+</div>
+<script>
+	console.log("helloworld");
+</script>
+
+</html>

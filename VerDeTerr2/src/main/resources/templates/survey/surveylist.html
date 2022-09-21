@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main/layout/basic">
+<th:block layout:fragment="title">
+	<title>The page is a survey page</title>
+</th:block>
+
+<th:block layout:fragment="content">
+	<div class="card-content">
+		<!-- form-->
+		<!-- Masthead-->
+		<header class="masthead">
+			<div class="container px-4 px-lg-5 h-100">
+				<div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+					<div class="col-lg-8 align-self-end">
+						<h1 class="text-white font-weight-bold">성격 유형 테스트</h1>
+						<hr class="divider" />
+						<br>
+						<span class="text-white font-weight-bold" th:text="|${session.user.getId()}님의|"></span>
+						<span class="text-white font-weight-bold" th:if="${type}!=null">현재 유형은</span>
+						<h4 class="text-white font-weight-bold" style="margin: 10px 0px 10px 0px" th:if="${type}!=null"
+							th:text="|${myChar.name} (${myChar.title}) 입니다.|"></h4>
+						<span class="text-white font-weight-bold" th:if="${type}==null"
+							th:text="|성격 유형을 확인하세요!|"></span>
+					</div>
+					<div class="col-lg-8 align-self-baseline">
+						<br>
+						<a class="btn btn-primary btn-xl" href="#question1">Test하러 가기</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<form class="form-horizontal" th:action="@{/survey/surveydone}" method="post" th:object="${survey}">
+
+			<div class="container px-4 px-lg-5">
+				<input type="text" style="display: none; text-align: center;" th:field="*{id}" id="id" value="${session.user.getId()}" readonly></input>
+			</div>
+
+			<!-- question-->
+			<section class="page-section bg-dark" id="question1">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-white mt-0">1</h2>
+							<hr class="divider divider-light" />
+							<p class="text-white-75 mb-4">당신은 다음 중 어떤 것에 더 영향을 받나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="Principles" value="Principles" th:field="*{answer1}" /> 
+								<label class="answer" for="Principles" >원칙</label> 
+								<input type="radio" id="Emotions" value="Emotions" th:field="*{answer1}" /> 
+								<label class="answer" for="Emotions" >감정</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-primary" id="question2">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-black mt-0">2</h2>
+							<hr class="divider divider-light" />
+							<p class="text-black-75 mb-4">당신은 회사를 지원할 때 어떤 경향이신가요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="Rather carefully" value="Rather carefully" th:field="*{answer2}" /> 
+								<label class="answer" for="Rather carefully">시간을 두고<br>신중히 알아본 후 지원</label> 
+								<input type="radio" id="Somewhat impulsively" value="Somewhat impulsively" th:field="*{answer2}" /> 
+								<label class="answer" for="Somewhat impulsively">다소 충동적으로<br>괜찮아 보이면 지원</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-dark" id="question3">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-white mt-0">3</h2>
+							<hr class="divider divider-light" />
+							<p class="text-white-75 mb-4">당신은 다음 중 어떤 유형의<br>회사에 더 관심이 있나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="What is actual" value="What is actual" th:field="*{answer3}" /> 
+								<label class="answer" for="What is actual">이미 많은 실적을<br>쌓아온 대기업</label> 
+								<input type="radio" id="What is possible" value="What is possible" th:field="*{answer3}" /> 
+								<label class="answer" for="What is possible">아직은 작지만 가능성이<br>충만한 스타트업</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-primary" id="question4">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-black mt-0">4</h2>
+							<hr class="divider divider-light" />
+							<p class="text-black-75 mb-4">당신은 다음 중 어떤 것이 더 거슬리나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="Incomplete" value="Incomplete" th:field="*{answer4}" /> 
+								<label class="answer" for="Incomplete">아직 미완성된 자소서</label>   
+								<input type="radio" id="Completed" value="Completed" th:field="*{answer4}" /> 
+								<label class="answer" for="Completed">어떻게든 완성은 했지만<br>내용이 부실한 자소서</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-dark" id="question5">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-white mt-0">5</h2>
+							<hr class="divider divider-light" />
+							<p class="text-white-75 mb-4">취준 정보를 얻을 때 당신은<br>다음 중 어떤 편에 속하나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="Keep abreast of other's happenings" value="Keep abreast of other's happenings" th:field="*{answer5}" /> 
+								<label class="answer" for="Keep abreast of other's happenings"> 최신 정보들을<br>잘 파악하고 있는 편</label>  
+								<input type="radio" id="Get behind on the news" value="Get behind on the news" th:field="*{answer5}" /> 
+								<label class="answer" for="Get behind on the news">뒤늦게 소식을<br>전달받는 편</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-primary" id="question6">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-black mt-0">6</h2>
+							<hr class="divider divider-light" />
+							<p class="text-black-75 mb-4">면접관의 질문에 대한 당신의 답변은?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="Logical judgments" value="Logical judgments" th:field="*{answer6}" /> 
+								<label class="answer" for="Logical judgments">논리적으로<br>근거를 들어 답변</label>   
+								<input type="radio" id="Value judgments" value="Value judgments" th:field="*{answer6}" /> 
+								<label class="answer" for="Value judgments">나의 가치관을<br>피력하며 답변</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-dark" id="question7">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-white mt-0">7</h2>
+							<hr class="divider divider-light" />
+							<p class="text-white-75 mb-4">회사에서 혼자 앞서 나가는 동기를 본다면?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="somewhat annoying" value="somewhat annoying" th:field="*{answer7}" /> 
+								<label class="answer" for="somewhat annoying">따라잡고 싶은<br>오기가 생긴다.</label>   
+								<input type="radio" id="rather fascinating" value="rather fascinating" th:field="*{answer7}" /> 
+								<label class="answer" for="rather fascinating">매력적으로 느껴진다.</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-primary" id="question8">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-black mt-0">8</h2>
+							<hr class="divider divider-light" />
+							<p class="text-black-75 mb-4">사회적 그룹에서 당신은 어느 쪽에 가깝나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="initiate conversation" value="initiate conversation" th:field="*{answer8}" /> 
+								<label class="answer" for="initiate conversation">주위 사람들에게<br>먼저 대화를 건다.</label>   
+								<input type="radio" id="wait to be approached" value="wait to be approached" th:field="*{answer8}" /> 
+								<label class="answer" for="wait to be approached">다른 사람이<br>다가오기를 기다린다.</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-dark" id="question9">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-white mt-0">9</h2>
+							<hr class="divider divider-light" />
+							<p class="text-white-75 mb-4">당신은 다음 중 어느 쪽에 가깝나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="firm than gentle" value="firm than gentle" th:field="*{answer9}" /> 
+								<label class="answer" for="firm than gentle">온화하기보다 단단한 편</label>   
+								<input type="radio" id="gentle than firm" value="gentle than firm" th:field="*{answer9}" /> 
+								<label class="answer" for="gentle than firm">단단하기보다 온화한 편</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-primary" id="question10">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-black mt-0">10</h2>
+							<hr class="divider divider-light" />
+							<p class="text-black-75 mb-4">당신은 다음 중 어떤 것에 더 가치를 두나요?</p>
+							<div class="radio-toggles">
+								<input type="radio" id="infinite" value="infinite" th:field="*{answer10}" /> 
+								<label class="answer" for="infinite">무한한 가능성</label>   
+								<input type="radio" id="open-minded" value="open-minded" th:field="*{answer10}" /> 
+								<label class="answer" for="open-minded">개방적인 마음</label>
+								<div class="slide-item"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-section bg-dark" id="question11">
+				<div class="container px-4 px-lg-5">
+					<div class="row gx-4 gx-lg-5 justify-content-center">
+						<div class="col-lg-8 text-center">
+							<h2 class="text-white mt-0">11</h2>
+							<hr class="divider divider-light" />
+							<p class="text-white-75 mb-4">당신은 다음 중 어느 쪽을 선호하시나요?</p>
+							<div class="radio-toggles">
+							<input type="radio" id="many friends with brief contact" value="many friends with brief contact" th:field="*{answer11}" /> 
+							<label class="answer" for="many friends with brief contact"> 많은 사람들과<br>짧게 연락하는 것</label>   
+							<input type="radio" id="a few friends with more lengthy contact" value="a few friends with more lengthy contact" th:field="*{answer11}" /> 
+							<label class="answer" for="a few friends with more lengthy contact"> 소수의 친구들과<br>길게 연락하는 것</label>
+							<div class="slide-item"></div>
+						</div>
+					</div>
+				</div>
+	</div>
+				</section>
+
+	<section class="page-section bg-primary" id="question12">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-8 text-center">
+					<h2 class="text-black mt-0">12</h2>
+					<hr class="divider divider-light" />
+					<p class="text-black-75 mb-4">당신은 다음 중 어떤 업무에 더 흥미가 있나요?</p>
+					<div class="radio-toggles">
+						<input type="radio" id="production and distribution" value="production and distribution" th:field="*{answer12}" /> 
+						<label class="answer" for="production and distribution">생산 및 분배</label>   
+						<input type="radio" id="design and research" value="design and research" th:field="*{answer12}" /> 
+						<label class="answer" for="design and research">디자인 및 연구</label>
+						<div class="slide-item"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-section bg-dark" id="question13">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-8 text-center">
+					<h2 class="text-white mt-0">13</h2>
+					<hr class="divider divider-light" />
+					<p class="text-white-75 mb-4">당신의 취업 준비는 대체로 어떻게 진행되나요?</p>
+					<div class="radio-toggles">
+						<input type="radio" id="make sure things are arranged" value="make sure things are arranged" th:field="*{answer13}" /> 
+						<label class="answer" for="make sure things are arranged"> 명확한 목표와 구체적인<br>계획에 따라 준비</label>   
+						<input type="radio" id="just let things happen" value="just let things happen" th:field="*{answer13}" /> 
+						<label class="answer" for="just let things happen">주어진 상황에<br>따라 유동적으로 진행</label>
+						<div class="slide-item"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-section bg-primary" id="question14">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-8 text-center">
+					<h2 class="text-black mt-0">14</h2>
+					<hr class="divider divider-light" />
+					<p class="text-black-75 mb-4">면접관이 질문 후 순서에 상관 없이<br>답변하라고 한다면?</p>
+					<div class="radio-toggles">
+						<input type="radio" id="hasten to get to it first" value="hasten to get to it first" th:field="*{answer14}" /> 
+						<label class="answer" for="hasten to get to it first">가장 먼저<br>손들고 답변한다.</label>   
+						<input type="radio" id="hope someone else will answer" value="hope someone else will answer" th:field="*{answer14}" /> 
+						<label class="answer" for="hope someone else will answer"> 다른 사람들이<br>먼저 답변하기를<br>기다린다.</label>
+						<div class="slide-item"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-section bg-dark" id="question15">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-8 text-center">
+					<h2 class="text-white mt-0">15</h2>
+					<hr class="divider divider-light" />
+					<p class="text-white-75 mb-4">당신은 다음 중 어느 팀원이<br>더 잘못되었다고 생각하나요?</p>
+					<div class="radio-toggles">
+						<input type="radio" id="to be too passionate" value="to be too passionate" th:field="*{answer15}" /> 
+						<label class="answer" for="to be too passionate">매사에 지나치게 열정적인<br>팀원</label>   
+						<input type="radio" id="to be too objective" value="to be too objective" th:field="*{answer15}" /> 
+						<label class="answer" for="to be too objective">매사에 지나치게 객관적인<br>팀원</label>
+						<div class="slide-item"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-section bg-primary" id="question16">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-lg-8 text-center">
+					<h2 class="text-black mt-0">16</h2>
+					<hr class="divider divider-light" />
+					<p class="text-black-75 mb-4">당신의 자소서는 다음 중 어느 쪽에 가깝나요?</p>
+					<div class="radio-toggles">
+						<input type="radio" id="the more literal" value="the more literal" th:field="*{answer16}" /> 
+						<label class="answer" for="the more literal">글자 그대로의<br>사실 위주로 기술한다.</label>   
+						<input type="radio" id="the more figurative" value="the more figurative" th:field="*{answer16}" /> 
+						<label class="answer" for="the more figurative">비유적인 표현을<br>사용하여 기술한다.</label>
+						<div class="slide-item"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Call to action_origin-->
+	<section class="page-section bg-dark text-white" id="result">
+		<div class="container px-4 px-lg-5 text-center">
+			<h2 class="mb-4">결과 확인하기</h2>
+			<button type="submit" class="btn btn-light btn-xl">RESULT</button>
+		</div>
+	</section>
+
+	</form>
+</div>
+	
+	<!-- /.card-content -->
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		function registerSurvey(form) {
+
+			/* 	var result = (
+						id = '아이디'
+				);
+
+				if ( result == false ) {
+					return false;
+				}  */
+			return true;
+		}
+		/*[- end of function -]*/
+
+		/*]]>*/
+	</script>
+</th:block>
+
+</html>

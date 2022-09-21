@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.mapper.BoardMapper">
+<!-- 게시판의 컬럼들 -->
+	<sql id="boardColumns">
+		  idx
+		, title
+		, content
+		, writer
+		, viewCnt
+		, noticeYn
+		, deleteYn
+		, insertTime
+		, updateTime
+		, deleteTime
+		, postType
+	</sql>
+	
+	
+ 
+	<!-- BoardMapper 에 있는 interface 와 아이디로 매핑시켜준다
+ -->	<insert id="insertBoard" parameterType="BoardDTO">
+		INSERT INTO post (
+			<include refid="boardColumns" />
+		) VALUES (
+			  #{idx}
+			, #{title}
+			, #{content}
+			, #{writer}
+			, 0
+			, IFNULL(#{noticeYn}, 0)
+			, 0
+			, NOW()
+			, NULL
+			, NULL
+			, #{postType}
+		)
+	</insert>
+
+	<select id="selectBoardDetail" parameterType="long" resultType="BoardDTO">
+		SELECT
+			<include refid="boardColumns" />
+		FROM
+			post
+		WHERE
+			deleteYn = 0
+		AND
+			idx = #{idx}
+	</select>
+
+	<update id="updateBoard" parameterType="BoardDTO">  
+		UPDATE post
+		SET
+			  updateTime = NOW()
+			, title = #{title}
+			, content = #{content}
+			, writer = #{writer}
+			, noticeYn = IFNULL(#{noticeYn}, 0)  <!-- 공지글여부 -->
+		WHERE
+			idx = #{idx}
+	</update>
+	
+	<update id="restore" parameterType="BoardDTO">
+	UPDATE post
+	SET
+		DeleteYn=false
+	WHERE
+			idx = #{idx}
+	
+	
+	</update>
+
+	<update id="deleteBoard" parameterType="BoardDTO" >
+		UPDATE post
+		SET
+			  DeleteYn = 1
+			, DeleteTime = NOW()
+		WHERE
+			idx = #{idx}
+	</update>
+
+	<select id="selectBoardList" parameterType="BoardDTO"  resultType="BoardDTO">
+		SELECT
+			<include refid="boardColumns" />
+		FROM
+			post
+		WHERE
+			deleteYn = 0
+			and postType Like IFNULL(#{postType}, '%')
+			and writer  Like IFNULL(#{writer}, '%')
+			<include refid="CommonMapper.search" />
+			
+		ORDER BY
+			noticeYn DESC,
+			idx DESC,
+			insertTime DESC
+		<include refid="CommonMapper.paging" />
+
+
+		
+	</select>
+		<!-- 마이바티스에서 #{파라미터}는 여러 멤버를 가진 객체의 경우 Getter에 해당됩니다. 
+	startPage 는 Criteria 클래스의 getStartPage 메서드의 리턴값을 의미하는데요, 
+	해당 메서드가 리턴하는 값은 (currentPageNo-1)*recordsPerPage 입니다. 
+	예를들어, 현재 페이지 번호(currentPageNo)를 3 으로, 페이지당 출력할 데이터의 개수(recordsPerPage)를 10으로
+	가정해보면 (3-1)*10=20 입니다. 
+	즉 Limit 20,10 으로 쿼리가 실행. -->
+
+	<select id="selectBoardTotalCount" parameterType="BoardDTO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			post
+		WHERE
+			deleteYn = 0
+			and postType Like IFNULL(#{postType}, '%')
+			and writer  Like IFNULL(#{writer}, '%')
+			<include refid="CommonMapper.search" />
+
+
+			
+		    <!-- and postType = #{boardDTO.postType}  Post_type 별로 출력 해주고 싶을때 --> 
+	</select>
+
+
+	<update id="updateViewcnt" parameterType="BoardDTO">
+		UPDATE post
+		SET
+			viewcnt=viewcnt+1
+		WHERE
+			idx=#{idx}	
+	</update>
+</mapper>

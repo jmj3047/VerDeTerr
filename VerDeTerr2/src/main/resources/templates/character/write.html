@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="survey/layout/basic">
+
+<th:block layout:fragment="title">
+	<title>Manager page</title>
+	<link href="css/styles.css" rel="stylesheet" />
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+	<div class="card-content" style="margin: 10% 10% 0 30%">
+		<form id="saveForm" class="form-horizontal" th:action="@{/character/register}" th:object="${character}"
+			method="post" onsubmit="return saveCharacter(this);" enctype="multipart/form-data">
+			<!--/* 기존 게시글 수정인 경우, 서버로 전달할 게시글 번호(id) */-->
+			<input type="text" class="form-control" style="display:none;" th:field="*{idx}"
+				th:if="*{idx != null and idx > 0}" readonly />
+
+			<div class="form-group">
+				<label for="name" class="col-sm-2 control-label">이름</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{name}" class="form-control" maxlength="50"
+						placeholder="이름을 입력해 주세요." />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">제목</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{title}" class="form-control" maxlength="50"
+						placeholder="제목을 입력해 주세요." />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="category" class="col-sm-2 control-label">카테고리</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{category}" class="form-control" maxlength="50"
+						placeholder="카테고리를 입력해 주세요." />
+				</div>
+			</div>
+			<br>
+			<input type="file" id="file" name="file" accept="image/*">
+
+			<div class="btn_wrap text-center" style="margin-right: 30%;">
+				<br>
+				<button onclick="history.go(-1)" class="btn btn-secondary waves-effect waves-light">뒤로가기</button>
+				<button type="submit" class="btn btn-primary waves-effect waves-light">저장하기</button>
+			</div>
+		</form>
+	</div>
+</th:block>
+<th:block layout:fragment="script">
+	<script th:src="@{/scripts/common.js}"></script>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		//  캐릭터 저장
+		function saveCharacter(form) {
+			var result = (
+				isValid(form.name, "이름", null, null)
+				&& isValid(form.title, "제목", null, null)
+				&& isValid(form.category, "카테고리", null, null)
+				&& isValid(form.userType, "유형", null, null)
+
+			);
+			if (result == false) {
+				return false;
+			}
+		}
+
+		/*         	// 이미지 파일 처리
+					function loadFile(input) {
+						var file = input.files[0];	//선택된 파일 가져오기
+		
+						//미리 만들어 놓은 div에 text(파일 이름) 추가
+						var name = document.getElementById('fileName');
+						name.textContent = file.name;
+		
+							//새로운 이미지 div 추가
+						var newImage = document.createElement("img");
+						newImage.setAttribute("class", 'img');
+		
+						//이미지 source 가져오기
+						newImage.src = URL.createObjectURL(file);   
+		
+						newImage.style.width = "70%";
+						newImage.style.height = "70%";
+						newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지를 숨긴다
+						newImage.style.objectFit = "contain";
+		
+						//이미지를 image-show div에 추가
+						var container = document.getElementById('image-show');
+						container.appendChild(newImage);
+					};
+				    
+					// submit 버튼 클릭시 이미지 보여주기 
+					var submit = document.getElementById('submitButton');
+					submit.onclick = showImage;     //Submit 버튼 클릭시 이미지 보여주기
+		
+					function showImage() {
+						var newImage = document.getElementById('image-show').lastElementChild;
+					  
+						//이미지는 화면에 나타나고
+						newImage.style.visibility = "visible";
+					  
+						//이미지 업로드 버튼은 숨겨진다
+						document.getElementById('image-upload').style.visibility = 'hidden';
+		
+						document.getElementById('fileName').textContent = null;     //기존 파일 이름 지우기
+					} */
+
+		/*]]>*/
+	</script>
+</th:block>
+
+</html>

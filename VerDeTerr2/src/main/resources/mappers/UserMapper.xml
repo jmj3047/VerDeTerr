@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.mapper.UserMapper">
+
+	<sql id="userColumns">
+		id
+		, pw
+		, pwHint
+		, email
+		, userType
+		, nickname
+		, age
+		, gender
+		, managerYn
+		, deleteYn
+		, regDate
+		, deleteDate
+	</sql>
+
+	<sql id="surveyOutputColumns">
+		idx
+		, ID
+		, TestDate
+		, UserAnswer
+		, UserType
+	</sql>
+
+	<insert id="insertUser" parameterType="UserDTO">
+		INSERT INTO member (
+		<include refid="userColumns" />
+		) VALUES (
+		#{id}
+		, #{pw}
+		, #{pwHint}
+		, #{email}
+		, null
+		, #{id}
+		, #{age}
+		, #{gender}
+		, 0
+		, 0
+		, NOW()
+		, null
+		)
+	</insert>
+
+	<select id="selectUserDetail" parameterType="String"
+		resultType="UserDTO">
+		SELECT
+		<include refid="userColumns" />
+		FROM
+		member
+		WHERE
+		id = #{id}
+		and deleteYn = 0
+	</select>
+
+	<select id="selectUserCharacter" parameterType="String"
+		resultType="CharacterDTO">
+		SELECT
+		 c.Idx
+		, c.Name
+		, c.Title
+		, c.Category
+		, c.UserType
+		, c.RegDate
+		,	c.filename
+		, c.filepath
+		FROM
+		 `member` m, `character` c
+		WHERE
+		 m.UserType = c.UserType	AND m.id=#{id} AND m.deleteYn = 0;
+	</select>
+
+	<update id="updateUser" parameterType="UserDTO">
+		UPDATE Member
+		SET
+		pw =
+		IFNULL(#{pw}, pw)
+		, pwHint = IFNULL(#{pwHint}, pwHint)
+		, userType =
+		(select userType
+		from Mbti_ML_Output
+		where TestDate = (select
+		MAX(TestDate)
+		from Mbti_ML_Output
+		where id = #{id}))
+		, nickname = id
+		WHERE
+		id = #{id}
+	</update>
+
+	<update id="deleteUser" parameterType="String">
+		update Member
+		set
+		deleteYn = 1,
+		deleteDate = NOW()
+		where id = #{id}
+	</update>
+
+	<select id="selectUserHistory" parameterType="String"
+		resultType="SurveyOutputDTO">
+		select
+		<include refid="surveyOutputColumns" />
+		from Mbti_ML_Output
+		where ID = #{id}
+		order by TestDate
+		desc
+	</select>
+
+	<select id="selectUserHistoryCount" parameterType="String"
+		resultType="int">
+		SELECT
+		COUNT(b.userType)
+		from Member a, Mbti_ML_Output b
+		where a.ID = b.ID
+		and a.ID = #{id}
+		and a.deleteYn = 0
+		order by b.TestDate
+	</select>
+
+	<select id="findId" resultType="UserDTO">
+		select
+		<include refid="userColumns" />
+		from Member
+		where Email=#{email}
+		and deleteYn = 0
+	</select>
+
+	<select id="findPw" resultType="UserDTO">
+		select
+		<include refid="userColumns" />
+		from Member
+		where PwHint=#{pwHint}
+		and deleteYn = 0
+	</select>
+
+	<select id="selectUserList" resultType="UserDTO">
+		select
+		<include refid="userColumns" />
+		from Member
+		where deleteYn = 0
+		order by regdate
+		desc
+	</select>
+
+	<select id="selectUserTotalCount" resultType="int">
+		select
+		Count(id)
+		from Member
+		where deleteYn = 0
+		order by regdate
+		desc
+	</select>
+
+
+</mapper>

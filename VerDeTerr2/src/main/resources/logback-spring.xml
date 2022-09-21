@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+	<!-- Appenders -->
+	<!-- appender:전달받은 로그를 어디에 출력할지 결정(콘솔출력,파일저장,데이터베이스 저장 등) -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d %5p [%c] %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d %5p %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- Logger -->
+	<!--  로그를 출렧하는 요로 level 속성을 통해 출력할 로그의 레벨을 조절하여 appender에 전달합니다.
+	첫번째 로그의 레벨을 조절하여 appender에 전달합니다. 첫번째 logger에서 com.board는 src/main/java
+	디렉터리 안의 자바 패키지 경로를 의미합니다.  -->
+	<logger name="com.board" level="DEBUG" appender-ref="console" />
+	<logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
+	<logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
+
+	<!-- Root Logger -->
+	<root level="off">
+		<appender-ref ref="console" />
+	</root>
+</configuration>

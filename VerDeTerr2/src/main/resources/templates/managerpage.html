@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="survey/layout/basic">
+
+<th:block layout:fragment="title">
+	<title>Manager page</title>
+	<link href="css/styles.css" rel="stylesheet" />
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+		<h1 style="text-align: center; padding: 40px;">My Page</h1>
+
+		<div class="row text-white-25" style="text-align: left; margin: 0px 200px;">
+			<div class="col-lg-7 col-md-3">
+				<h2 style="text-align: left; margin: 20px 0px 40px 0px">Personal Info</h2>
+				<h5 style="text-align: left; margin: 10px"
+					 th:text="|* 아이디 : ${session.user.getId()} (관리자)|">여기는 아이디입니다.</h5>
+				<h5 style="text-align: left; margin: 10px"
+					 th:text="|* 닉네임 : ${session.user.getNickname()}|">여기는 닉네임입니다.
+				</h5>
+				<h5 style="text-align: left; margin: 10px"
+					 th:text="|* 이메일 : ${session.user.getEmail()}|">여기는 이메일입니다.</h5>
+				<br>
+				<div class="btn_wrap"  style="margin: 10px" >
+					<a th:href="@{/board/mylist}" class="btn btn-primary waves-effect waves-light">내가 쓴 글 보기</a>
+					<a th:href="@{/modify(id=${session.user.getId()})}"
+						class="btn btn-primary waves-effect waves-light">비밀번호 변경</a>
+					<a th:href="@{/deleteUser(id=${session.user.getId()})}"
+						class="btn btn-secondary waves-effect waves-light">회원탈퇴</a>
+				</div>
+			</div>
+			<div class="col-lg-5 col-md-3" style="text-align: center;">
+				<img th:if="${session.user.getUserCharacter()!=null}" th:src="${session.user.getUserCharacter().getFilepath()}" width=90%>
+			</div>
+		</div>
+
+	<div class="table-responsive clearfix" style="margin: 40px 200px 40px 200px;">
+		<h2 style="text-align: left; margin:10px">Member List</h2>
+			<table class="table table-hover"
+				style="margin-left: auto; margin-right: auto; text-align: center;">
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>구분</th>
+						<th>아이디</th>
+						<th>성별</th>
+						<th>나이</th>
+						<th>유형</th>
+						<th>이메일</th>
+						<th>가입일자</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${not #lists.isEmpty( userList )}"
+						th:each="row, i : ${userList}">
+						<td scope="row" th:text="${listCount - i.index}"></td>
+						<td th:if="${row.managerYn}">관리자</td>
+						<td th:if="${!row.managerYn}">사용자</td>
+						<td th:text="${row.id}"></td>
+						<td th:text="${row.gender}"></td>
+						<td th:text="${row.age}"></td>
+						<td th:if="${row.userCharacter}!=null" th:text="|${row.userCharacter.getName()}|"></td>
+						<td th:if="${row.userCharacter}==null" th:text="."></td>
+						<td th:text="${row.email}"></td>
+						<td class="text-left"><a
+							th:text="${#temporals.format( row.regDate, 'yyyy-MM-dd' )}"></a>
+						</td>
+					</tr>
+					<tr th:unless="${not #lists.isEmpty( userList )}">
+						<td colspan="5">조회된 결과가 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+</th:block>
+
+</html>

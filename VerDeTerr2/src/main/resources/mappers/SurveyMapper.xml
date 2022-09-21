@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.SurveyMapper">
+
+	<sql id="surveyInputColumns">
+		  idx
+		, id
+		, answer1
+		, answer2
+		, answer3
+		, answer4
+		, answer5
+		, answer6
+		, answer7
+		, answer8
+		, answer9
+		, answer10
+		, answer11
+		, answer12
+		, answer13
+		, answer14
+		, answer15
+		, answer16
+	</sql>
+
+	<insert id="insertSurvey" parameterType="SurveyDTO">
+		INSERT INTO Mbti_ML (
+			<include refid="surveyInputColumns" />
+		) VALUES (
+			  null
+			, #{id}
+			, #{answer1}
+			, #{answer2}
+			, #{answer3}
+			, #{answer4}
+			, #{answer5}
+			, #{answer6}
+			, #{answer7}
+			, #{answer8}
+			, #{answer9}
+			, #{answer10}
+			, #{answer11}
+			, #{answer12}
+			, #{answer13}
+			, #{answer14}
+			, #{answer15}
+			, #{answer16}
+		)
+	</insert>
+
+	
+	<update id="updateSurvey" parameterType="SurveyDTO">
+		INSERT INTO Mbti_ML (
+			<include refid="surveyInputColumns" />
+		) VALUES (
+			  null
+			, #{id}
+			, #{answer1}
+			, #{answer2}
+			, #{answer3}
+			, #{answer4}
+			, #{answer5}
+			, #{answer6}
+			, #{answer7}
+			, #{answer8}
+			, #{answer9}
+			, #{answer10}
+			, #{answer11}
+			, #{answer12}
+			, #{answer13}
+			, #{answer14}
+			, #{answer15}
+			, #{answer16}
+		)
+	</update>
+	
+	<sql id="surveyOutputColumns">
+		  idx
+		, id
+		, TestDate
+		, UserAnswer
+		, UserType
+	</sql>
+	
+	<select id="selectSurveyOutput" parameterType="String" resultType="SurveyOutputDTO">
+		SELECT
+			UserType
+		FROM
+			Mbti_ML_Output
+		WHERE
+			id = #{id}
+	</select>
+	
+	<select id="selectSurveyList" parameterType="String" resultType="SurveyOutputDTO">
+		SELECT
+			<include refid="surveyOutputColumns" />
+		FROM
+			Mbti_ML_output
+		WHERE
+			id = #{id}
+		ORDER BY TestDate
+		DESC limit 1
+		
+	</select>
+	
+	<sql id="mbtiTypeColumns">
+		  UserType
+		, Category
+		, Feature
+		, Feature2
+		, InCompany
+		, Job
+		, GoodMatch
+		, BadMatch
+	</sql>
+
+	<select id="selectTypeInfo" parameterType="String" resultType="TypeDTO">
+		SELECT
+			<include refid="mbtiTypeColumns" />
+		FROM
+			Mbti_Type
+		WHERE
+			UserType = #{userType}
+	</select>
+
+
+</mapper>

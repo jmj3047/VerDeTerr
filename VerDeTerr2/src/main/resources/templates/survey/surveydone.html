@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="main/layout/basic">
+<th:block layout:fragment="title">
+	<title>Loading</title>
+      <script>
+         window.onload = function () {
+            var sec = 9;
+            setInterval(function () {
+               document.getElementById("timer").innerHTML = sec;
+               sec--;
+            }, 1000);
+         };
+		setTimeout("location.href='surveyresult'", 10000);
+	</script>
+</th:block>
+
+
+<th:block layout:fragment="content">
+	<div class="card-content">
+		<!-- form-->
+		<form class="form-horizontal">
+			<!-- Masthead-->
+			<header class="masthead">
+				<div class="container px-4 px-lg-5 h-100">
+					<div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+						<div class="col-lg-8 align-self-end">
+							<h3 class="text-white font-weight-bold" th:text="|${session.user.getId()}님의 유형은...|"></h3>
+							<hr class="divider" />
+						</div>
+
+						<div class="col-lg-8 align-self-baseline">
+							<h3 class="text-white-75 mb-5">현재 분석 중입니다.</h3>
+							<span id="timer" class="text-white-75 mb-5">10</span>
+							<span class="text-white-75 mb-5">초 후에 결과 페이지로 이동합니다.</span>
+						</div>
+					</div>
+				</div>
+			</header>
+		</form>
+	</div>
+
+</th:block>
+
+</html>

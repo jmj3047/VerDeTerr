@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.mapper.SignUpMapper">
+
+	<sql id="userColumns">
+		id
+		, pw
+		, pwHint
+		, email
+		, userType
+		, nickname
+		, age
+		, gender
+		, managerYn
+		, deleteYn
+		, regDate
+		, deleteDate
+	</sql>
+
+	<insert id="insertUser" parameterType="UserDTO">
+		INSERT INTO member (
+		<include refid="userColumns" />
+		) VALUES (
+		#{id}
+		, #{pw}
+		, #{pwHint}
+		, #{email}
+		, CONCAT(#{id}, '_', #{userType})
+		, #{id}
+		, #{age}
+		, #{gender}
+		, 0
+		, 0
+		, NOW()
+		, null
+		)
+	</insert>
+
+	<select id="selectUserIdCount" parameterType="String" resultType="int">
+		SELECT 
+		count(id)
+		FROM
+		member
+		WHERE
+		id = #{id}
+	</select>
+	
+	<select id="selectUserEmailCount" parameterType="String" resultType="int">
+		SELECT 
+		count(email)
+		FROM
+		member
+		WHERE
+		email = #{email}
+		and deleteYn = 0
+	</select>
+
+</mapper>

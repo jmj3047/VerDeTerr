@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head th:fragment="main-head">
+		<title>취준생을 위한 Disney 심리테스트</title>
+		<link rel="shortcut icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToliAS9nDKYBWsivY_dZ5S2mL5jzUG_O_gUQ&usqp=CAU">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<th:block layout:fragment="title"></th:block>
+
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+		<link rel="stylesheet" th:href="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}" />
+
+		<th:block layout:fragment="add-css"></th:block>
+	</head>
+</html>
